@@ -3,8 +3,14 @@
 
 #include "cocos2d.h"
 
+using namespace cocos2d;
+
 class HelloWorld : public cocos2d::Layer
 {
+private:
+	TMXTiledMap *_tileMap;
+    TMXLayer *_background;
+
 public:
     // there's no 'id' in cpp, so we recommend returning the class instance pointer
     static cocos2d::Scene* createScene();
