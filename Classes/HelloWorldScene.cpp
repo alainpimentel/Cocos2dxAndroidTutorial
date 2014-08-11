@@ -30,20 +30,31 @@ bool HelloWorld::init()
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    /*_batchNode = CCSpriteBatchNode::create("Sprites.pvr.ccz");
-    this->addChild(_batchNode);
-    CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Sprites.plist");
-
-    _ship = CCSprite::createWithSpriteFrameName("SpaceFlier_sm_1.png");
-    CCSize winSize = CCDirector::sharedDirector()->getWinSize();
-    _ship->setPosition(ccp(winSize.width * 0.1, winSize.height * 0.5));
-    _batchNode->addChild(_ship, 1);*/
     _tileMap = TMXTiledMap::create("TileMaps/TileMap.tmx");
     _background = _tileMap->layerNamed("Background");
 
     addChild(_tileMap, 0, 1);
-//    Size CC_UNUSED s = map->getContentSize();
-//        CCLOG("ContentSize: %f, %f", s.width,s.height);
+
+    //Adding played in spawnPoint
+
+    TMXObjectGroup *objectGroup = _tileMap->getObjectGroup("Objects");
+
+    if(objectGroup == NULL){
+        CCLog("tile map has no objects object layer");
+        return false;
+    }
+
+    auto spawnPoint = objectGroup->getObject("SpawnPoint");
+
+    int x = spawnPoint["x"].asInt();
+    int y = spawnPoint["y"].asInt();
+
+    _player = CCSprite::create("Player.png");
+    _player->setPosition(ccp(x,y));
+
+    this->addChild(_player);
+    this->setViewPointCenter(_player->getPosition());
+
     return true;
 }
 
@@ -61,3 +72,19 @@ void HelloWorld::menuCloseCallback(Ref* pSender)
     exit(0);
 #endif
 }
+
+void HelloWorld::setViewPointCenter(CCPoint position) {
+
+    CCSize winSize = CCDirector::sharedDirector()->getWinSize();
+
+    int x = MAX(position.x, winSize.width/2);
+    int y = MAX(position.y, winSize.height/2);
+    x = MIN(x, (_tileMap->getMapSize().width * this->_tileMap->getTileSize().width) - winSize.width / 2);
+    y = MIN(y, (_tileMap->getMapSize().height * _tileMap->getTileSize().height) - winSize.height/2);
+    CCPoint actualPosition = ccp(x, y);
+
+    CCPoint centerOfView = ccp(winSize.width/2, winSize.height/2);
+    CCPoint viewPoint = ccpSub(centerOfView, actualPosition);
+    this->setPosition(viewPoint);
+}
+

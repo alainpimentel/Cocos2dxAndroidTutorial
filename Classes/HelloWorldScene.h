@@ -10,6 +10,7 @@ class HelloWorld : public cocos2d::Layer
 private:
 	TMXTiledMap *_tileMap;
     TMXLayer *_background;
+    CCSprite *_player;
 
 public:
     // there's no 'id' in cpp, so we recommend returning the class instance pointer
@@ -23,6 +24,8 @@ public:
     
     // implement the "static create()" method manually
     CREATE_FUNC(HelloWorld);
+
+    void setViewPointCenter(CCPoint position);
 };
 
 #endif // __HELLOWORLD_SCENE_H__
