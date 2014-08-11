@@ -6,22 +6,13 @@
 
 USING_NS_CC;
 
-class HelloWorld : public cocos2d::Layer
+typedef enum {
+	KENDREASONWIN,
+	KENDREASONLOSE
+} EndReason;
+
+class HelloWorld : public Layer
 {
-private:
-	cocos2d::CCSpriteBatchNode * _batchNode;
-	cocos2d::CCSprite * _ship;
-	ParallaxNodeExtras *_backgroundNode;
-	CCSprite *_spacedust1;
-	CCSprite *_spacedust2;
-	CCSprite *_planetsunrise;
-	CCSprite *_galaxy;
-	CCSprite *_spacialanomaly;
-	CCSprite *_spacialanomaly2;
-
-	// scheduled Update
-	void update(float dt);
-
 public:
     // there's no 'id' in cpp, so we recommend returning the class instance pointer
     static cocos2d::Scene* createScene();
@@ -34,6 +25,30 @@ public:
     
     // implement the "static create()" method manually
     CREATE_FUNC(HelloWorld);
+
+	virtual void onAcceleration(Acceleration* acc, Event* event);
+	float randomValueBetween(float low, float high);
+	void setInvisible(Node * node);
+	float getTimeTick();
+	void onTouchesBegan(const std::vector<Touch*>& touches, Event  *event);
+private:
+	SpriteBatchNode *_batchNode;
+	Sprite *_ship;
+	ParallaxNodeExtras *_backgroundNode;
+	Sprite *_spaceDust1, *_spaceDust2, *_planetSunrise, *_galaxy, *_spatialAnomaly1, *_spatialAnomaly2;
+	float _shipPointsPerSecY;
+	Vector<Sprite*> *_asteroids;
+	int _nextAsteroid=0;
+	float _nextAsteroidSpawn=0;
+	Vector<Sprite*> *_shipLasers;
+	int _nextShipLaser=0;
+	int _lives=0;
+	double _gameOverTime;
+	bool _gameOver=false;
+
+	void update(float dt);
+	void endScene(EndReason endReason);
+	void restartTapped(Ref* pSender);
 };
 
 #endif // __HELLOWORLD_SCENE_H__

@@ -40,6 +40,7 @@ private:
 	Node *_child; // weak ref
 };
 
+
 // Need to provide a constructor
 ParallaxNodeExtras::ParallaxNodeExtras() {
 	ParallaxNode::create(); // call parent constructor
