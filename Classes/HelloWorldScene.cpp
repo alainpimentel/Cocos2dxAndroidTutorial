@@ -61,6 +61,10 @@ bool HelloWorld::init()
 	listener->onTouchEnded = CC_CALLBACK_2(HelloWorld::onTouchEnded, this);
 	this->_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
+	// collide
+	_meta = _tileMap->layerNamed("Meta");
+	_meta->setVisible(false);
+
     return true;
 }
 
@@ -137,7 +141,25 @@ void HelloWorld::onTouchEnded(Touch *touch, Event *unused_event)
 
 void HelloWorld::setPlayerPosition(Point position)
 {
-    _player->setPosition(position);
+	Point tileCoord = this->tileCoordForPosition(position);
+	int tileGid = _meta->getTileGIDAt(tileCoord);
+	if (tileGid) {
+		auto properties = _tileMap->getPropertiesForGID(tileGid).asValueMap();
+		if (!properties.empty()) {
+			auto collision = properties["Collidable"].asString();
+			if ("True" == collision) {
+				return;
+			}
+		}
+	}
+	_player->setPosition(position);
 }
 
+
+Point HelloWorld::tileCoordForPosition(Point position)
+{
+	int x = position.x / _tileMap->getTileSize().width;
+	int y = ((_tileMap->getMapSize().height * _tileMap->getTileSize().height) - position.y) / _tileMap->getTileSize().height;
+	return Point(x, y);
+}
 

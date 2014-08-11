@@ -11,6 +11,7 @@ private:
 	TMXTiledMap *_tileMap;
     TMXLayer *_background;
     CCSprite *_player;
+    TMXLayer *_meta; //collide
 
 public:
     // there's no 'id' in cpp, so we recommend returning the class instance pointer
@@ -30,6 +31,8 @@ public:
     void onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *unused_event);
     //void setViewPointCenter(cocos2d::Point position);
     void setPlayerPosition(cocos2d::Point position);
+    //calculate the tile's coordinate
+    Point tileCoordForPosition(cocos2d::Point position);
 };
 
 #endif // __HELLOWORLD_SCENE_H__
