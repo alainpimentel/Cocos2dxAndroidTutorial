@@ -315,7 +315,8 @@
   jni/../../cocos2d/cocos/./deprecated/CCBool.h \
   jni/../../cocos2d/cocos/./deprecated/CCNotificationCenter.h \
   jni/../../cocos2d/cocos/./deprecated/CCDeprecated.h \
-  jni/../../Classes/HelloWorldScene.h
+  jni/../../Classes/HelloWorldScene.h \
+  jni/../../Classes/CCParallaxNodeExtras.h
 
 jni/../../Classes/AppDelegate.h:
 
@@ -950,3 +951,5 @@ jni/../../cocos2d/cocos/./deprecated/CCNotificationCenter.h:
 jni/../../cocos2d/cocos/./deprecated/CCDeprecated.h:
 
 jni/../../Classes/HelloWorldScene.h:
+
+jni/../../Classes/CCParallaxNodeExtras.h:

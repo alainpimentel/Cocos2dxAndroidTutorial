@@ -2,6 +2,7 @@
 #define __HELLOWORLD_SCENE_H__
 
 #include "cocos2d.h"
+#include "CCParallaxNodeExtras.h"
 
 USING_NS_CC;
 
@@ -10,13 +11,16 @@ class HelloWorld : public cocos2d::Layer
 private:
 	cocos2d::CCSpriteBatchNode * _batchNode;
 	cocos2d::CCSprite * _ship;
-	CCParallaxNode *_backgroundNode;
+	ParallaxNodeExtras *_backgroundNode;
 	CCSprite *_spacedust1;
 	CCSprite *_spacedust2;
 	CCSprite *_planetsunrise;
 	CCSprite *_galaxy;
 	CCSprite *_spacialanomaly;
 	CCSprite *_spacialanomaly2;
+
+	// scheduled Update
+	void update(float dt);
 
 public:
     // there's no 'id' in cpp, so we recommend returning the class instance pointer

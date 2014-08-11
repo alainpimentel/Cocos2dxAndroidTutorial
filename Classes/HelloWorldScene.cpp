@@ -40,7 +40,7 @@ bool HelloWorld::init()
     _batchNode->addChild(_ship, 1);
 
     // 1) Create the CCParallaxNode
-	_backgroundNode = CCParallaxNode::create(); //1
+	_backgroundNode = ParallaxNodeExtras::create();
 	this->addChild(_backgroundNode,-1);
 
 	// 2) Create the sprites will be added to the CCParallaxNode
@@ -63,6 +63,9 @@ bool HelloWorld::init()
 	_backgroundNode->addChild(_spacialanomaly, -1, bgSpeed, ccp(900, winSize.height * 0.3));
 	_backgroundNode->addChild(_spacialanomaly2, -1, bgSpeed, ccp(1500, winSize.height * 0.9));
 
+	// Call the background scroll method
+	this->scheduleUpdate();
+
     return true;
 }
 
@@ -79,4 +82,35 @@ void HelloWorld::menuCloseCallback(Ref* pSender)
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
     exit(0);
 #endif
+}
+
+void HelloWorld::update(float dt) {
+  CCPoint backgroundScrollVert = ccp(-1000, 0);
+  _backgroundNode->setPosition(ccpAdd(_backgroundNode->getPosition(), ccpMult(backgroundScrollVert, dt)));
+
+  CCArray *spaceDusts = CCArray::createWithCapacity(2);
+  spaceDusts->addObject(_spacedust1);
+  spaceDusts->addObject(_spacedust2);
+  for ( int ii = 0; ii <spaceDusts->count(); ii++ ) {
+      CCSprite * spaceDust = (CCSprite *)(spaceDusts->objectAtIndex(ii));
+      float xPosition = _backgroundNode->convertToWorldSpace(spaceDust->getPosition()).x;
+      float size = spaceDust->getContentSize().width;
+      if ( xPosition < -size/2 ) {
+          _backgroundNode->incrementOffset(ccp(spaceDust->getContentSize().width*2,0),spaceDust);
+      }
+  }
+
+  CCArray *backGrounds = CCArray::createWithCapacity(4);
+  backGrounds->addObject(_galaxy);
+  backGrounds->addObject(_planetsunrise);
+  backGrounds->addObject(_spacialanomaly);
+  backGrounds->addObject(_spacialanomaly2);
+  for ( int ii = 0; ii <backGrounds->count(); ii++ ) {
+      CCSprite * background = (CCSprite *)(backGrounds->objectAtIndex(ii));
+      float xPosition = _backgroundNode->convertToWorldSpace(background->getPosition()).x;
+      float size = background->getContentSize().width;
+      if ( xPosition < -size ) {
+          _backgroundNode->incrementOffset(ccp(2000,0),background);
+      }
+  }
 }
