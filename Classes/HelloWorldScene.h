@@ -3,8 +3,21 @@
 
 #include "cocos2d.h"
 
+USING_NS_CC;
+
 class HelloWorld : public cocos2d::Layer
 {
+private:
+	cocos2d::CCSpriteBatchNode * _batchNode;
+	cocos2d::CCSprite * _ship;
+	CCParallaxNode *_backgroundNode;
+	CCSprite *_spacedust1;
+	CCSprite *_spacedust2;
+	CCSprite *_planetsunrise;
+	CCSprite *_galaxy;
+	CCSprite *_spacialanomaly;
+	CCSprite *_spacialanomaly2;
+
 public:
     // there's no 'id' in cpp, so we recommend returning the class instance pointer
     static cocos2d::Scene* createScene();
