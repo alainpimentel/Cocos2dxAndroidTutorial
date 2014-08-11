@@ -55,6 +55,12 @@ bool HelloWorld::init()
     this->addChild(_player);
     this->setViewPointCenter(_player->getPosition());
 
+    // touch for movement
+    auto listener = EventListenerTouchOneByOne::create();
+	listener->onTouchBegan = [&](Touch *touch, Event *unused_event)->bool {return true;};
+	listener->onTouchEnded = CC_CALLBACK_2(HelloWorld::onTouchEnded, this);
+	this->_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+
     return true;
 }
 
@@ -87,4 +93,51 @@ void HelloWorld::setViewPointCenter(CCPoint position) {
     CCPoint viewPoint = ccpSub(centerOfView, actualPosition);
     this->setPosition(viewPoint);
 }
+
+void HelloWorld::onTouchEnded(Touch *touch, Event *unused_event)
+{
+	auto actionTo1 = RotateTo::create(0, 0, 180);
+	auto actionTo2 = RotateTo::create(0, 0, 0);
+	auto touchLocation = touch->getLocation();
+
+	touchLocation = this->convertToNodeSpace(touchLocation);
+
+	auto playerPos = _player->getPosition();
+	auto diff = touchLocation - playerPos;
+	if (abs(diff.x) > abs(diff.y)) {
+		if (diff.x > 0) {
+			playerPos.x += _tileMap->getTileSize().width / 2;
+			_player->runAction(actionTo2);
+		}
+		else {
+			playerPos.x -= _tileMap->getTileSize().width / 2;
+			_player->runAction(actionTo1);
+		}
+	}
+	else {
+	 if (diff.y > 0) {
+	    playerPos.y += _tileMap->getTileSize().height / 2;
+	 }
+		else {
+		 playerPos.y -= _tileMap->getTileSize().height / 2;
+		}
+ }
+
+	if (playerPos.x <= (_tileMap->getMapSize().width * _tileMap->getMapSize().width) &&
+	 playerPos.y <= (_tileMap->getMapSize().height * _tileMap->getMapSize().height) &&
+	 playerPos.y >= 0 &&
+	 playerPos.x >= 0)
+	{
+	 this->setPlayerPosition(playerPos);
+
+ }
+
+	this->setViewPointCenter(_player->getPosition());
+}
+
+void HelloWorld::setPlayerPosition(Point position)
+{
+    _player->setPosition(position);
+}
+
 

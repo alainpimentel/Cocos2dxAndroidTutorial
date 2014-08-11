@@ -26,6 +26,10 @@ public:
     CREATE_FUNC(HelloWorld);
 
     void setViewPointCenter(CCPoint position);
+
+    void onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *unused_event);
+    //void setViewPointCenter(cocos2d::Point position);
+    void setPlayerPosition(cocos2d::Point position);
 };
 
 #endif // __HELLOWORLD_SCENE_H__
