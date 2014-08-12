@@ -32,6 +32,7 @@ bool HelloWorld::init()
 
     _tileMap = TMXTiledMap::create("TileMaps/TileMap.tmx");
     _background = _tileMap->layerNamed("Background");
+    _foreground = _tileMap->getLayer("Foreground");
 
     addChild(_tileMap, 0, 1);
 
@@ -149,6 +150,11 @@ void HelloWorld::setPlayerPosition(Point position)
 			auto collision = properties["Collidable"].asString();
 			if ("True" == collision) {
 				return;
+			}
+			auto collectable = properties["Collectable"].asString();
+			if ("True" == collectable) {
+				_meta->removeTileAt(tileCoord);
+				_foreground->removeTileAt(tileCoord);
 			}
 		}
 	}

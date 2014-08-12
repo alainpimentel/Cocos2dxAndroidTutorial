@@ -12,6 +12,7 @@ private:
     TMXLayer *_background;
     CCSprite *_player;
     TMXLayer *_meta; //collide
+    TMXLayer *_foreground;
 
 public:
     // there's no 'id' in cpp, so we recommend returning the class instance pointer
