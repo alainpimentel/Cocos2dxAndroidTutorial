@@ -2,6 +2,8 @@
 
 USING_NS_CC;
 
+HelloWorldHud *HelloWorld::_hud = NULL;
+
 Scene* HelloWorld::createScene()
 {
     // 'scene' is an autorelease object
@@ -12,6 +14,11 @@ Scene* HelloWorld::createScene()
 
     // add layer as a child to scene
     scene->addChild(layer);
+
+    auto hud = HelloWorldHud::create();
+    _hud = hud;
+
+    scene->addChild(hud);
 
     // return the scene
     return scene;
@@ -155,6 +162,8 @@ void HelloWorld::setPlayerPosition(Point position)
 			if ("True" == collectable) {
 				_meta->removeTileAt(tileCoord);
 				_foreground->removeTileAt(tileCoord);
+				this->_numCollected++;
+				this->_hud->numCollectedChanged(_numCollected);
 			}
 		}
 	}
@@ -167,5 +176,29 @@ Point HelloWorld::tileCoordForPosition(Point position)
 	int x = position.x / _tileMap->getTileSize().width;
 	int y = ((_tileMap->getMapSize().height * _tileMap->getTileSize().height) - position.y) / _tileMap->getTileSize().height;
 	return Point(x, y);
+}
+
+bool HelloWorldHud::init()
+{
+    if (!Layer::init())
+    {
+        return false;
+    }
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    label = LabelTTF::create("0", "fonts/Marker Felt.ttf", 18.0f, Size(50, 20), TextHAlignment::RIGHT);
+    label->setColor(Color3B(0, 0, 0));
+    int margin = 10;
+    label->setPosition(visibleSize.width - (label->getDimensions().width / 2) - margin,
+        label->getDimensions().height / 2 + margin);
+    this->addChild(label);
+
+    return true;
+}
+
+void HelloWorldHud::numCollectedChanged(int numCollected)
+{
+    char showStr[20];
+    sprintf(showStr, "%d", numCollected);
+    label->setString(showStr);
 }
 

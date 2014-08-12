@@ -5,6 +5,16 @@
 
 using namespace cocos2d;
 
+class HelloWorldHud : public cocos2d::Layer
+{
+public:
+    void numCollectedChanged(int numCollected);
+    virtual bool init();
+    CREATE_FUNC(HelloWorldHud);
+
+    cocos2d::LabelTTF *label;
+};
+
 class HelloWorld : public cocos2d::Layer
 {
 private:
@@ -13,6 +23,8 @@ private:
     CCSprite *_player;
     TMXLayer *_meta; //collide
     TMXLayer *_foreground;
+    int _numCollected;
+    static HelloWorldHud *_hud;
 
 public:
     // there's no 'id' in cpp, so we recommend returning the class instance pointer
