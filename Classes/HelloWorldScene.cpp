@@ -1,4 +1,7 @@
 #include "HelloWorldScene.h"
+#include "SimpleAudioEngine.h"
+
+using namespace CocosDenshion;
 
 USING_NS_CC;
 
@@ -27,6 +30,12 @@ Scene* HelloWorld::createScene()
 // on "init" you need to initialize your instance
 bool HelloWorld::init()
 {
+	//CocosDenshion::SimpleAudioEngine::sharedEngine()->preloadEffect("pickup.caf");
+	//CocosDenshion::SimpleAudioEngine::sharedEngine()->preloadEffect("hit.caf");
+	//CocosDenshion::SimpleAudioEngine::sharedEngine()->preloadEffect("move.caf");
+	CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic("background-music-aac.wav", true);
+	CocosDenshion::SimpleAudioEngine::sharedEngine()->setBackgroundMusicVolume(0.1);
+
     //////////////////////////////
     // 1. super init first
     if ( !Layer::init() )
@@ -156,6 +165,7 @@ void HelloWorld::setPlayerPosition(Point position)
 		if (!properties.empty()) {
 			auto collision = properties["Collidable"].asString();
 			if ("True" == collision) {
+				CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("Strong_Punch.mp3");
 				return;
 			}
 			auto collectable = properties["Collectable"].asString();
@@ -164,9 +174,11 @@ void HelloWorld::setPlayerPosition(Point position)
 				_foreground->removeTileAt(tileCoord);
 				this->_numCollected++;
 				this->_hud->numCollectedChanged(_numCollected);
+				CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("Power_Up_Ray.mp3");
 			}
 		}
 	}
+	CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("pew-pew-lei.wav");
 	_player->setPosition(position);
 }
 
